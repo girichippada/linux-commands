@@ -38,4 +38,7 @@ aws s3 cp <s3_uri> <target_folder> --region <aws_region>
 ## Useful JVM Thread dump notes
 Usually, a thread dump indicates who holds the lock with either “- locked <0x…> (at …)” or “Locked ownable synchronizers,” 
 https://netflixtechblog.com/java-21-virtual-threads-dude-wheres-my-lock-3052540e231d
+
+You can use the the system property jdk.tracePinnedThreads to emit a stack trace when a thread blocks while pinned. 
+Running with the option -Djdk.tracePinnedThreads=full prints a complete stack trace when a thread blocks while pinned, highlighting native frames and frames holding monitors. Running with the option -Djdk.tracePinnedThreads=short limits the output to just the problematic frames.
  
