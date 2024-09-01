@@ -1,48 +1,41 @@
---checking file mount disk usage:
+## checking file mount disk usage:
 df -h
 
---checking free memory of the machine
+## Checking the free memory of the machine
 free -h
 
---checking list of processes of the system
+## Checking the list of processes in the system
 ps -aux
 
-
+## Checking memory used by all files of a file mount
 du -ah /dev/nvme0n1p1 | sort -rh | head -n 10
 
---find all files whose size is more than 100 MB
+## Find all files whose size is more than 100 MB
 sudo find / -type f -size +50M -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'
 
+## Delete all the logs of a file
 sudo truncate -s 0 /var/log/messages
 
---system logging service
+##  system journal logging service
 sudo systemctl status rsyslog
 sudo systemctl restart rsyslog
 
---journal logs:
+## journal logs:
 ll /run/log/journal
 
---find files modified older than last 3 days
+## Find files modified older than the last 3 days
 find /run/log/journal -type f -mtime +3
 
---delete
+## delete
 sudo find /run/log/journal -type f -mtime +3 -exec rm -f {} \;
 
+list all files based on the size of a folder
+du -h <target_folder_path>
 
+## to copy the file or folder from s3 to a target folder:
+aws s3 cp <s3_uri> <target_folder> --region <aws_region>
 
-
-list all files based on size of a folder
-du -h /home/centos/logstash-8.9.0
-
-
---deleted index pattern in prod
-edp-logstash-service.mds.repair_order.raw-*
-
-replaced with:
-dyw-edp-logstash-edp.service.mds.repair_order.raw-*-raw
-created:
-dyw-edp-logstash-edp.consumer.mds.customer.raw-*-raw
-dyw-edp-logstash-edp.sales.mds.vehicle_sales.raw-*-raw
-
-aws s3 cp s3://prod-confluent-edp-aws/dyw-logstash-pipelines/configs/pipelines/dyw-snapshot/dyw-snapshot.config . --region us-west-2
+## Useful JVM Thread dump notes
+Usually, a thread dump indicates who holds the lock with either “- locked <0x…> (at …)” or “Locked ownable synchronizers,” 
+https://netflixtechblog.com/java-21-virtual-threads-dude-wheres-my-lock-3052540e231d
  
